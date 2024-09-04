@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>可疑车辆列表</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        #car-image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h2>可疑车辆列表</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>车牌号</th>
+        <th>监控点</th>
+        <th>时间</th>
+    </tr>
+    </thead>
+    <tbody th:each="car : ${carList}">
+    <tr>
+        <td th:text="${car.licensePlate}">JIIA 00001</td>
+        <td th:text="${car.monitoringPoint}">Ai街通</td>
+        <td th:text="${car.time}">23-11-20 13:08</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>套牌车信息</h2>
+<div>
+    <p>车牌号: <span th:text="${selectedCar.licensePlate}">川A 00001</span></p>
+    <p>车型: <span th:text="${selectedCar.model}">轿车</span></p>
+    <p>品牌: <span th:text="${selectedCar.brand}">一汽大众</span></p>
+    <p>颜色: <span th:text="${selectedCar.color}">白色</span></p>
+    <p>速度: <span th:text="${selectedCar.speed}">60 km/h</span></p>
+    <p>超速: <span th:text="${selectedCar.overspeed ? '是' : '否'}">否</span></p>
+    <p>违规驾驶: <span th:text="${selectedCar.illegalDriving ? '是' : '否'}">否</span></p>
+    <p>监控点: <span th:text="${selectedCar.monitoringPoint}">A街道B路口</span></p>
+    <p>时间: <span th:text="${selectedCar.time}">23-11-20 13:08</span></p>
+</div>
+
+<h2>车辆图片</h2>
+<img th:src="@{/images/car.jpg}" id="car-image" alt="车辆图片"/>
+
+</body>
+</html>
