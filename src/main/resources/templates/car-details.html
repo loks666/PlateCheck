@@ -98,7 +98,7 @@
 
 <!-- 顶部横幅 -->
 <div id="banner">
-    <img src="/images/banner.png" alt="Banner">
+    <img alt="Banner" src="/images/banner.png">
 </div>
 
 <!-- 车辆详情容器 -->
@@ -122,7 +122,7 @@
             <!-- 车辆图片 -->
             <div class="car-image">
                 <h2>车辆图片显示</h2>
-                <img th:src="${car.img}" alt="车辆图片">
+                <img alt="车辆图片" th:src="${car.img}">
                 <!-- 将链接移动到图片的下方 -->
                 <div th:with="intersection=${car.intersection != null ? car.intersection : ''}">
                     <a th:href="@{'/car/accompanyingCars?intersection=' + ${intersection}}">查看伴随车辆</a>

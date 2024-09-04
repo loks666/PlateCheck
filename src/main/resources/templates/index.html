@@ -88,7 +88,7 @@
 
 <!-- 顶部 banner 区域 -->
 <div id="banner">
-    <img src="/images/banner.png" alt="Banner Image">
+    <img alt="Banner Image" src="/images/banner.png">
 </div>
 
 <!-- 表格卡片样式容器 -->
@@ -119,15 +119,17 @@
 
     <!-- 分页 -->
     <div class="pagination">
-        <a th:if="${currentPage > 1}" th:href="@{'/?pageNum=' + (${currentPage} - 1) + '&pageSize=' + ${pageSize}}">&laquo; 上一页</a>
+        <a th:href="@{'/?pageNum=' + (${currentPage} - 1) + '&pageSize=' + ${pageSize}}" th:if="${currentPage > 1}">&laquo;
+            上一页</a>
 
         <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <a th:href="@{'/?pageNum=' + ${i} + '&pageSize=' + ${pageSize}}"
-               th:classappend="${i == currentPage} ? 'active' : ''"
+            <a th:classappend="${i == currentPage} ? 'active' : ''"
+               th:href="@{'/?pageNum=' + ${i} + '&pageSize=' + ${pageSize}}"
                th:text="${i}"></a>
         </span>
 
-        <a th:if="${currentPage < totalPages}" th:href="@{'/?pageNum=' + (${currentPage} + 1) + '&pageSize=' + ${pageSize}}">下一页 &raquo;</a>
+        <a th:href="@{'/?pageNum=' + (${currentPage} + 1) + '&pageSize=' + ${pageSize}}"
+           th:if="${currentPage < totalPages}">下一页 &raquo;</a>
     </div>
 </div>
 

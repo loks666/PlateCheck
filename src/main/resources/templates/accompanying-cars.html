@@ -13,29 +13,36 @@
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         table, th, td {
             border: 1px solid #ddd;
         }
+
         th, td {
             padding: 12px;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
             font-weight: bold;
         }
+
         .buttons {
             margin-top: 20px;
             text-align: center;
         }
+
         .buttons button {
             padding: 10px 20px;
             margin: 5px;
         }
+
         /* 空数据提示样式 */
         .empty-message {
             text-align: center;
@@ -57,14 +64,14 @@
 <body>
 
 <div id="banner">
-    <img src="/images/banner.png" alt="Banner" />
+    <img alt="Banner" src="/images/banner.png"/>
 </div>
 
 <div class="table-container">
     <h2>伴随车辆列表 - <span th:text="${intersection}"></span></h2>
 
     <!-- 如果车列表为空，显示提示 -->
-    <div th:if="${#lists.isEmpty(carList)}" class="empty-message">
+    <div class="empty-message" th:if="${#lists.isEmpty(carList)}">
         没有找到伴随车辆。
     </div>
 
