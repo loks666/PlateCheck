@@ -101,16 +101,21 @@
             <th>车牌号</th>
             <th>监控点</th>
             <th>时间</th>
+            <th>操作</th> <!-- 新增操作列 -->
         </tr>
         </thead>
         <tbody th:each="car : ${carList}">
         <tr>
             <td th:text="${car.licensePlate}"></td>
-            <td th:text="${car.monitoringPoint}"></td>
+            <td th:text="${car.street + ' ' + car.intersection}"></td>
             <td th:text="${#temporals.format(car.time, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <a th:href="@{'/car/details/' + ${car.id}}">详情</a> <!-- 点击跳转到详情页 -->
+            </td>
         </tr>
         </tbody>
     </table>
+
 
     <!-- 分页 -->
     <div class="pagination">

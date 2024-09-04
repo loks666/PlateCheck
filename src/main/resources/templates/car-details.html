@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆详情</title>
+    <style>
+        /* 样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        #banner {
+            width: 100%;
+            height: auto;
+        }
+
+        #banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto; /* 容器居中 */
+        }
+
+        .car-info {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .car-details {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start; /* 调整信息和图片的顶部对齐 */
+        }
+
+        .car-image img {
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        /* 底部按钮样式 */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+
+        .button-container button:active {
+            transform: scale(0.98);
+        }
+
+        /* 添加链接下方样式 */
+        .car-image a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: blue;
+            text-decoration: none;
+        }
+
+        .car-image a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 顶部横幅 -->
+<div id="banner">
+    <img src="/images/banner.png" alt="Banner">
+</div>
+
+<!-- 车辆详情容器 -->
+<div class="container">
+    <div class="car-info">
+        <div class="car-details">
+            <!-- 车辆详细信息 -->
+            <div>
+                <h2>车辆详细信息</h2>
+                <p>车牌号: <span th:text="${car.licensePlate}"></span></p>
+                <p>车辆类型: <span th:text="${car.model}"></span></p>
+                <p>车辆品牌: <span th:text="${car.brand}"></span></p>
+                <p>车辆颜色: <span th:text="${car.color}"></span></p>
+                <p>行驶速度: <span th:text="${car.speed}"></span> km/h</p>
+                <p>是否超速: <span th:text="${car.overSpeed ? '是' : '否'}"></span></p>
+                <p>是否违规驾驶: <span th:text="${car.illegalDriving ? '是' : '否'}"></span></p>
+                <p>监控点: <span th:text="${car.street + ' ' + car.intersection}"></span></p>
+                <p>时间: <span th:text="${#temporals.format(car.time, 'yyyy-MM-dd HH:mm')}"></span></p>
+            </div>
+
+            <!-- 车辆图片 -->
+            <div class="car-image">
+                <h2>车辆图片显示</h2>
+                <img th:src="${car.img}" alt="车辆图片">
+                <!-- 将链接移动到图片的下方 -->
+                <div th:with="intersection=${car.intersection != null ? car.intersection : ''}">
+                    <a th:href="@{'/car/accompanyingCars?intersection=' + ${intersection}}">查看伴随车辆</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部按钮 -->
+    <div class="button-container">
+        <button onclick="window.history.back()">返回</button>
+        <button th:attr="onclick='setCarStatus(' + ${car.id} + ', \'套牌车\')'">套牌车</button>
+        <button th:attr="onclick='setCarStatus(' + ${car.id} + ', \'非套牌车\')'">非套牌车</button>
+        <button th:attr="onclick='setCarStatus(' + ${car.id} + ', \'存疑\')'">存疑</button>
+    </div>
+</div>
+
+<script>
+    function setCarStatus(carId, status) {
+        fetch(`/updateStatus/${carId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `status=${status}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    if (status === '套牌车' && data.suspiciousCars) {
+                        console.log('同街道和路口可疑车辆:', data.suspiciousCars);
+                    }
+                } else {
+                    alert('状态更新失败: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>

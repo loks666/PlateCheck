@@ -39,9 +39,18 @@ public class Car {
     @TableField("illegal_driving")
     private Boolean illegalDriving; // 是否违规驾驶
 
-    @TableField("monitoring_point")
-    private String monitoringPoint; // 监控点
-
     @TableField("time")
     private LocalDateTime time;    // 检测时间
+
+    @TableField("status")  // 添加状态字段
+    private String status;         // 车辆状态 (如: 套牌车、非套牌车、存疑)
+
+    @TableField("img")
+    private String img;            // 图片路径
+
+    @TableField("street")  // 新的字段
+    private String street;
+
+    @TableField("intersection")  // 新的字段
+    private String intersection;
 }
