@@ -6,10 +6,7 @@ import com.example.car.mapper.CarMapper;
 import com.example.car.service.CarService;
 import org.springframework.stereotype.Service;
 
-/**
- * 车辆服务实现类
- */
 @Service
 public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements CarService {
-    // 可以在此处实现额外的业务逻辑
+    // 继承了 ServiceImpl 并实现了 CarService，不需要额外的方法定义，MyBatis-Plus 已经提供了默认的 CRUD 功能
 }

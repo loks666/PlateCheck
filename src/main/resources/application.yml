@@ -10,3 +10,6 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   type-aliases-package: com.example.demo.entity
+
+server:
+  port: 8082

@@ -4,59 +4,127 @@
     <meta charset="UTF-8">
     <title>可疑车辆列表</title>
     <style>
+        /* 全局样式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 顶部的 banner 样式 */
+        #banner {
+            width: 100%;
+            height: auto;
+            background-color: #fff;
+            padding: 0;
+            text-align: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #banner img {
+            width: 100%;
+            height: auto;
+        }
+
+        /* 表格容器 */
+        .table-container {
+            margin: 20px auto;
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 表格样式 */
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
+
         th, td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
         }
-        #car-image {
-            width: 100%;
-            height: auto;
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        /* 分页部分样式 */
+        .pagination {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .pagination a {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            display: inline-block;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
 
-<h2>可疑车辆列表</h2>
-
-<table>
-    <thead>
-    <tr>
-        <th>车牌号</th>
-        <th>监控点</th>
-        <th>时间</th>
-    </tr>
-    </thead>
-    <tbody th:each="car : ${carList}">
-    <tr>
-        <td th:text="${car.licensePlate}">JIIA 00001</td>
-        <td th:text="${car.monitoringPoint}">Ai街通</td>
-        <td th:text="${car.time}">23-11-20 13:08</td>
-    </tr>
-    </tbody>
-</table>
-
-<h2>套牌车信息</h2>
-<div>
-    <p>车牌号: <span th:text="${selectedCar.licensePlate}">川A 00001</span></p>
-    <p>车型: <span th:text="${selectedCar.model}">轿车</span></p>
-    <p>品牌: <span th:text="${selectedCar.brand}">一汽大众</span></p>
-    <p>颜色: <span th:text="${selectedCar.color}">白色</span></p>
-    <p>速度: <span th:text="${selectedCar.speed}">60 km/h</span></p>
-    <p>超速: <span th:text="${selectedCar.overspeed ? '是' : '否'}">否</span></p>
-    <p>违规驾驶: <span th:text="${selectedCar.illegalDriving ? '是' : '否'}">否</span></p>
-    <p>监控点: <span th:text="${selectedCar.monitoringPoint}">A街道B路口</span></p>
-    <p>时间: <span th:text="${selectedCar.time}">23-11-20 13:08</span></p>
+<!-- 顶部 banner 区域 -->
+<div id="banner">
+    <img src="/images/banner.png" alt="Banner Image">
 </div>
 
-<h2>车辆图片</h2>
-<img th:src="@{/images/car.jpg}" id="car-image" alt="车辆图片"/>
+<!-- 表格卡片样式容器 -->
+<div class="table-container">
+    <h2>可疑车辆列表</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>车牌号</th>
+            <th>监控点</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody th:each="car : ${carList}">
+        <tr>
+            <td th:text="${car.licensePlate}"></td>
+            <td th:text="${car.monitoringPoint}"></td>
+            <td th:text="${#temporals.format(car.time, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 分页 -->
+    <div class="pagination">
+        <a th:if="${currentPage > 1}" th:href="@{'/?pageNum=' + (${currentPage} - 1) + '&pageSize=' + ${pageSize}}">&laquo; 上一页</a>
+
+        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{'/?pageNum=' + ${i} + '&pageSize=' + ${pageSize}}"
+               th:classappend="${i == currentPage} ? 'active' : ''"
+               th:text="${i}"></a>
+        </span>
+
+        <a th:if="${currentPage < totalPages}" th:href="@{'/?pageNum=' + (${currentPage} + 1) + '&pageSize=' + ${pageSize}}">下一页 &raquo;</a>
+    </div>
+</div>
 
 </body>
 </html>
